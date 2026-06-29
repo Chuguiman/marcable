@@ -1,26 +1,33 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-brand: #69EA9B;
+  --color-brand-hover: #54D987;
+  --color-brand-dark: #69EA9B;
+  --color-brand-subtle: rgba(105, 234, 155, 0.18);
+  --color-page-bg: #e0e1da;
+  --color-page-deep: #d5d7cf;
+  --color-menu-green: #69EA9B;
+  --color-menu-text: #0D302D;
+  --font-sans: var(--font-poppins), system-ui, sans-serif;
+  --font-display: var(--font-jost), var(--font-poppins), system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.38), transparent 34%),
+    linear-gradient(180deg, var(--color-page-bg) 0%, var(--color-page-deep) 100%);
 }
+
+.dark body {
+  background: #0a0a0a;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
+.dark ::-webkit-scrollbar-thumb { background: #404040; }
