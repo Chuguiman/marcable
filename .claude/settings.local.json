@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:claude.ai)",
+      "Bash(bash scripts/start-server.sh --project-dir C:/laragon/www/marcable)",
+      "Bash(bash \"C:/Users/granj/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/brainstorming/scripts/start-server.sh\" --project-dir \"C:/laragon/www/marcable\")",
+      "Bash(npx:*)",
+      "Bash(cp -r /c/laragon/www/marcable-temp/package.json /c/laragon/www/marcable/)",
+      "Bash(cp -r /c/laragon/www/marcable-temp/package-lock.json /c/laragon/www/marcable/)",
+      "Bash(cp -r /c/laragon/www/marcable-temp/tsconfig.json /c/laragon/www/marcable/)",
+      "Bash(cp -r /c/laragon/www/marcable-temp/next.config.ts /c/laragon/www/marcable/)",
+      "Bash(cp -r /c/laragon/www/marcable-temp/next-env.d.ts /c/laragon/www/marcable/)",
+      "Bash(cp:*)",
+      "Bash(npm install:*)",
+      "Bash(timeout 15 npm run dev)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
