@@ -59,53 +59,71 @@ const plans = [
     code: "free",
     name: "Gratuito",
     price: 0,
-    period: "",
+    priceYearly: 0,
     features: [
-      "5 busquedas AI por dia",
-      "Consultas basicas ilimitadas",
-      "1 pais (Colombia)",
+      "5 consultas basicas por dia",
     ],
     limitations: [
-      "Sin vigilancia",
+      "Sin busqueda AI",
       "Sin exportacion",
+      "Sin vigilancia",
+      "Sin analytics",
       "Sin soporte prioritario",
     ],
     current: true,
   },
   {
-    code: "pro",
-    name: "Profesional",
-    price: 49,
-    period: "/mes",
+    code: "emprende",
+    name: "Emprende",
+    price: 19,
+    priceYearly: 15,
     features: [
-      "100 busquedas AI por dia",
       "Consultas basicas ilimitadas",
-      "Vigilancia: hasta 10 marcas",
-      "Exportacion PDF/Excel",
+      "Exportacion PDF / Excel",
+      "3 busquedas AI por dia",
+      "Soporte por email",
+    ],
+    limitations: [
+      "Sin vigilancia (pay-to-go: $20/unidad)",
+      "Sin analytics",
+    ],
+    extras: "Vigilancia pay-to-go: $20 por marca",
+  },
+  {
+    code: "profesional",
+    name: "Profesional",
+    price: 59,
+    priceYearly: 47,
+    features: [
+      "Todo lo de Emprende",
+      "20 busquedas AI por dia",
+      "Analytics completo",
+      "1 vigilancia incluida",
+      "Vigilancia adicional: $10/unidad",
       "Soporte por email",
     ],
     limitations: [],
     popular: true,
   },
   {
-    code: "enterprise",
-    name: "Empresarial",
-    price: 149,
-    period: "/mes",
+    code: "business",
+    name: "Business",
+    price: 199,
+    priceYearly: 159,
     features: [
-      "Busquedas AI ilimitadas",
-      "Consultas basicas ilimitadas",
-      "Vigilancia: hasta 100 marcas",
-      "Exportacion PDF/Excel/API",
-      "Soporte prioritario",
-      "Usuarios multiples",
-      "Multi-pais",
+      "Todo lo de Profesional",
+      "50 busquedas AI por dia",
+      "5 vigilancias incluidas",
+      "Vigilancia adicional: $5/unidad",
+      "Soporte por email y chat",
     ],
     limitations: [],
   },
 ];
 
 function BillingTab() {
+  const [annual, setAnnual] = useState(false);
+
   return (
     <div className="space-y-6">
       {/* Current plan summary */}
@@ -116,7 +134,7 @@ function BillingTab() {
               <p className="font-semibold text-sm">Gratuito</p>
               <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-slate-100 dark:bg-neutral-800 text-slate-500">Activo</span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-neutral-500 mt-0.5">5 busquedas AI por dia</p>
+            <p className="text-xs text-slate-500 dark:text-neutral-500 mt-0.5">5 consultas basicas por dia</p>
           </div>
           <div className="text-right">
             <p className="text-2xl font-bold font-display">$0</p>
@@ -127,8 +145,9 @@ function BillingTab() {
 
       {/* Usage */}
       <Section title="Uso del periodo actual">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <UsageBar label="Busquedas AI" used={0} limit={5} unit="hoy" />
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <UsageBar label="Consultas basicas" used={0} limit={5} unit="hoy" />
+          <UsageBar label="Busquedas AI" used={0} limit={0} unit="hoy" />
           <UsageBar label="Vigilancia" used={0} limit={0} unit="marcas" />
           <UsageBar label="Exportaciones" used={0} limit={0} unit="este mes" />
         </div>
@@ -136,59 +155,94 @@ function BillingTab() {
 
       {/* Plans comparison */}
       <div>
-        <h2 className="font-display text-sm font-semibold mb-4">Planes disponibles</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {plans.map((plan) => (
-            <div
-              key={plan.code}
-              className={`relative bg-white dark:bg-neutral-900 rounded-xl border-2 p-5 ${
-                plan.popular
-                  ? "border-brand shadow-sm"
-                  : plan.current
-                    ? "border-slate-300 dark:border-neutral-600"
-                    : "border-slate-200 dark:border-neutral-800"
-              }`}
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-display text-sm font-semibold">Planes disponibles</h2>
+          <div className="flex items-center gap-2">
+            <span className={`text-xs font-medium ${!annual ? "text-slate-900 dark:text-white" : "text-slate-400"}`}>Mensual</span>
+            <button
+              onClick={() => setAnnual(!annual)}
+              className={`w-10 h-6 rounded-full relative transition-colors ${annual ? "bg-brand" : "bg-slate-200 dark:bg-neutral-700"}`}
             >
-              {plan.popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold px-3 py-1 rounded-full bg-brand text-menu-text">
-                  Popular
-                </span>
-              )}
-              <h3 className="font-display text-base font-semibold">{plan.name}</h3>
-              <div className="flex items-baseline gap-1 mt-2 mb-4">
-                <span className="text-3xl font-bold font-display">${plan.price}</span>
-                {plan.period && <span className="text-sm text-slate-500">{plan.period}</span>}
+              <div className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-transform ${annual ? "translate-x-5" : "translate-x-1"}`} />
+            </button>
+            <span className={`text-xs font-medium ${annual ? "text-slate-900 dark:text-white" : "text-slate-400"}`}>
+              Anual
+              <span className="ml-1 text-[10px] text-brand font-bold">-20%</span>
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {plans.map((plan) => {
+            const price = annual ? plan.priceYearly : plan.price;
+            const isPopular = "popular" in plan && plan.popular;
+            const isCurrent = "current" in plan && plan.current;
+
+            return (
+              <div
+                key={plan.code}
+                className={`relative bg-white dark:bg-neutral-900 rounded-xl border-2 p-5 flex flex-col ${
+                  isPopular
+                    ? "border-brand shadow-sm"
+                    : isCurrent
+                      ? "border-slate-300 dark:border-neutral-600"
+                      : "border-slate-200 dark:border-neutral-800"
+                }`}
+              >
+                {isPopular && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold px-3 py-1 rounded-full bg-brand text-menu-text whitespace-nowrap">
+                    Mas popular
+                  </span>
+                )}
+                <h3 className="font-display text-base font-semibold">{plan.name}</h3>
+                <div className="flex items-baseline gap-1 mt-2 mb-1">
+                  <span className="text-3xl font-bold font-display">${price}</span>
+                  {price > 0 && <span className="text-sm text-slate-500">/ mes</span>}
+                </div>
+                {annual && price > 0 && (
+                  <p className="text-[10px] text-slate-400 mb-3">
+                    ${price * 12} USD facturado anualmente
+                  </p>
+                )}
+                {!annual && price > 0 && (
+                  <p className="text-[10px] text-slate-400 mb-3">
+                    Facturado mensualmente
+                  </p>
+                )}
+                {price === 0 && <p className="text-[10px] text-slate-400 mb-3">Gratis para siempre</p>}
+
+                <ul className="space-y-2 mb-5 flex-1">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-xs">
+                      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-brand shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                        <path d="m5 12 5 5L20 7" />
+                      </svg>
+                      {f}
+                    </li>
+                  ))}
+                  {plan.limitations.map((l) => (
+                    <li key={l} className="flex items-start gap-2 text-xs text-slate-400">
+                      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                      </svg>
+                      {l}
+                    </li>
+                  ))}
+                </ul>
+
+                {isCurrent ? (
+                  <button className="w-full py-2.5 rounded-lg text-sm font-medium border border-slate-300 dark:border-neutral-600 text-slate-500 cursor-default">
+                    Plan actual
+                  </button>
+                ) : (
+                  <button className="w-full py-2.5 rounded-lg text-sm font-semibold bg-brand text-menu-text hover:bg-brand-hover transition-colors">
+                    Elegir plan
+                  </button>
+                )}
               </div>
-              <ul className="space-y-2 mb-5">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-xs">
-                    <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-brand shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <path d="m5 12 5 5L20 7" />
-                    </svg>
-                    {f}
-                  </li>
-                ))}
-                {plan.limitations.map((l) => (
-                  <li key={l} className="flex items-start gap-2 text-xs text-slate-400">
-                    <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                      <path d="M18 6 6 18" />
-                      <path d="m6 6 12 12" />
-                    </svg>
-                    {l}
-                  </li>
-                ))}
-              </ul>
-              {plan.current ? (
-                <button className="w-full py-2.5 rounded-lg text-sm font-medium border border-slate-300 dark:border-neutral-600 text-slate-500 cursor-default">
-                  Plan actual
-                </button>
-              ) : (
-                <button className="w-full py-2.5 rounded-lg text-sm font-semibold bg-brand text-menu-text hover:bg-brand-hover transition-colors">
-                  Elegir plan
-                </button>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
