@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { Select } from "@/components/ui/select";
 import { MultiSelectAutocomplete, type AutocompleteOption } from "@/components/ui/multi-select-autocomplete";
+import { NiceClassPicker } from "@/components/ui/nice-class-picker";
 import { DatePicker } from "@/components/ui/date-picker";
 import { createClient } from "@/lib/supabase/client";
 
@@ -48,14 +49,6 @@ const tipoMarcaOptions = [
   { value: "sonora", label: "Sonora" },
 ];
 
-const claseNizaOptions = [
-  { value: "", label: "Todas" },
-  ...Array.from({ length: 45 }, (_, i) => ({
-    value: String(i + 1),
-    label: `Clase ${i + 1}`,
-  })),
-];
-
 const codigoVienaOptions = [
   { value: "", label: "Todos" },
 ];
@@ -75,9 +68,9 @@ export default function ConsultasPage() {
     categoria: "",
     estatus: "",
     tipo: "",
-    clase: "",
     vienna: "",
   });
+  const [niceClasses, setNiceClasses] = useState<number[]>([]);
   const [fechaTipo, setFechaTipo] = useState("solicitud");
 
   // Multi-select autocomplete state
@@ -252,11 +245,10 @@ export default function ConsultasPage() {
                 onChange={(v) => setFilters({ ...filters, tipo: v })}
                 options={tipoMarcaOptions}
               />
-              <Select
-                label="Clase Niza"
-                value={filters.clase}
-                onChange={(v) => setFilters({ ...filters, clase: v })}
-                options={claseNizaOptions}
+              <NiceClassPicker
+                label="Clases Niza"
+                selected={niceClasses}
+                onChange={setNiceClasses}
               />
               <Select
                 label="Codigo Viena"
@@ -270,7 +262,7 @@ export default function ConsultasPage() {
                 Aplicar filtros
               </button>
               <button
-                onClick={() => setFilters({ categoria: "", estatus: "", tipo: "", clase: "", vienna: "" })}
+                onClick={() => { setFilters({ categoria: "", estatus: "", tipo: "", vienna: "" }); setNiceClasses([]); }}
                 className="px-4 py-2 text-xs text-slate-500 hover:text-slate-700 dark:hover:text-neutral-300 transition-colors"
               >
                 Limpiar
