@@ -27,7 +27,10 @@
       "Bash(rm package-lock.json)",
       "Bash(pnpm install:*)",
       "Bash(ls:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote:*)",
+      "Bash(git push:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

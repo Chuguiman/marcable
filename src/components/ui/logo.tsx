@@ -1,4 +1,4 @@
-export function Logo({ size = 28 }: { size?: number }) {
+export function Logo({ size = 28, variant = "default" }: { size?: number; variant?: "default" | "light" }) {
   return (
     <div className="flex items-center gap-2.5">
       <div
@@ -24,7 +24,7 @@ export function Logo({ size = 28 }: { size?: number }) {
           <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.98 2.3l-1.05 7A2 2 0 0 1 18.78 21H6a2 2 0 0 1-2-2v-7.34a2 2 0 0 1 .59-1.41l6.41-6.41a2 2 0 0 1 3.41 1.63Z" />
         </svg>
       </div>
-      <span className="font-display text-lg font-bold tracking-tight">
+      <span className={`font-display text-lg font-bold tracking-tight ${variant === "light" ? "text-white" : ""}`}>
         Marcable
       </span>
     </div>
