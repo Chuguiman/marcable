@@ -37,16 +37,15 @@ export function DatePicker({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // When value changes externally, sync view
-  useEffect(() => {
-    if (value) {
-      const d = parseDate(value);
-      if (d) {
-        setViewYear(d.getFullYear());
-        setViewMonth(d.getMonth());
-      }
+  // When value changes externally, sync view (adjusted during render, not in an effect)
+  const [prevValue, setPrevValue] = useState(value);
+  if (value !== prevValue) {
+    setPrevValue(value);
+    if (parsed) {
+      setViewYear(parsed.getFullYear());
+      setViewMonth(parsed.getMonth());
     }
-  }, [value]);
+  }
 
   function prevMonth() {
     if (viewMonth === 0) {
